@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include "Interface.h"
+using namespace std;
+int getWords();
 
 int main()
 {
@@ -48,7 +50,7 @@ int main()
 			break;
 		case '6':
 			iCount = getWords();
-			if(!(iCount == -1))
+			if (!(iCount == -1))
 				cout << "Число слов : " << iCount << endl;
 			break;
 		case '0':
@@ -61,4 +63,33 @@ int main()
 	} while (true);
 	system("pause");
 	return 0;
+}
+
+int getWords()
+{
+	try
+	{
+		ifstream file("Text.txt");
+		int wordsCount = 0;
+		int lengthWord;
+		string word;
+		if (!file)
+			throw (string)"Ошибка открытия файла";
+		while (!file.eof())
+		{
+			file >> word;
+			lengthWord = 0;
+			for (int i = 0; i < word.length(); i++)
+				if (word[i] >= 'a' && word[i] <= 'z' || word[i] >= 'A' && word[i] <= 'Z' || word[i] >= 'а' && word[i] <= 'я' || word[i] >= 'А' && word[i] <= 'Я')
+					lengthWord++;
+			if (lengthWord < 5 && lengthWord)
+				wordsCount++;
+		}
+		return wordsCount;
+	}
+	catch (string err)
+	{
+		cout << "[Error] " + err << endl;
+		return -1;
+	}
 }
